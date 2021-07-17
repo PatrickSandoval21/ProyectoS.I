@@ -1,0 +1,55 @@
+.categories_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    font-family: 'Dosis', sans-serif;
+}
+.category_info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 98.5%;
+    height: 35px;
+    padding-bottom: 15px;
+    margin-bottom: 5px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    background-color: coral;
+}
+.titleCatSection{
+    display: flex;
+    font-family: 'Dosis', sans-serif;
+    font-size: 2.5rem;
+    justify-content: center;
+    color: cornsilk;
+}
+.category{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 30%;
+    height: 350px;
+    background-color: var(--backgroundProductsBox);
+    margin: 45px 80px;
+    align-items: center;
+    border-radius: 20px;
+}
+.category_title{
+    font-size: 2rem;
+    text-transform: uppercase;
+    margin: 5px;
+    color: whitesmoke;
+    text-shadow: 2px 2px teal;
+}
+
+.category_img{
+    box-sizing: border-box;
+    height: 295px;
+    width: 100%;
+    background-size: cover;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding: 3px 3px 0 3px;
+}

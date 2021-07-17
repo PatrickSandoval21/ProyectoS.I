@@ -1,0 +1,45 @@
+.Home{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    
+}
+/* h1{
+    text-align: center;
+} */
+.ingreso{
+    text-align: center;
+    width: 45%;
+    margin:10px;
+}
+.pedidos h2{
+    color:skyblue;
+    font-size: 2rem;
+}
+.ingreso h2{
+    color:skyblue;
+    font-size: 2rem;
+}
+.pedidos{
+    text-align: center;
+    width:45%;
+    margin:10px;
+}
+.grap{  
+     width:48%;
+     margin:10px;
+}
+
+.legend{
+    width: 48%;
+    margin:10px;
+}
+.circlesta{
+    width: 48%;
+    margin:10px;
+}
+.radiopolar{
+    margin:10px;
+    width: 48%;
+
+}

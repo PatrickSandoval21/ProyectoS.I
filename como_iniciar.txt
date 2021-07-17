@@ -1,0 +1,8 @@
+instalar node en tu pc (npm)
+entrar por consola a las 3 carpetas bases
+cd C:/restaurantProject/server
+cd C:/restaurantProject/client_admin
+cd C:/restaurantProject/client
+y ejecutar el siguiente comando en cada carpeta:
+para server : `npm run startDev`
+para client_admin y client : `npm start`

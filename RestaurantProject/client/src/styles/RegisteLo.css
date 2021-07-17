@@ -1,0 +1,87 @@
+form{
+    display: flex;
+    text-align: center;
+    font-size: 1.5rem;
+    font-family: 'Dosis', sans-serif;
+    flex-direction: column;
+    
+}
+form div *{
+    margin: 10px;
+}
+input{
+    width: 150px;
+    height: 20px;
+}
+button{
+    cursor: pointer;
+    border: 0px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: rgba(117, 135, 168, 0.192);
+  }
+  
+  button:hover{
+    background-color: rgba(117, 135, 168, 0.541);
+  }
+
+  .info_account{
+    display: flex;
+    text-align: center;
+    font-size: 1rem;
+    font-family: 'Dosis', sans-serif;
+    flex-direction: column;
+  }
+  .info_account div{
+    margin: 0;
+    padding: 0;
+  }
+  p{
+    margin: 10px;
+    padding: 0;
+  }
+  h4{
+      font-size: 2rem;
+      margin: 10px;
+    padding: 0;
+  }
+
+  .listorder{
+    text-align: center  ;
+    display: flex;
+    flex-direction: column;
+  }
+  .items_order{
+      background-color: rgba(33, 57, 77, 0.103);
+      display: flex;
+      flex-direction: row;
+      margin: 10px;
+      width: 70%;
+      justify-content: center;
+      align-items: center;
+      border-radius: 20px;
+  }
+  .items_order div{
+    text-align: center;
+    font-size: 1.5rem;
+    font-family: 'Dosis', sans-serif;
+      padding: 10px;
+  }
+  .final_price{
+    font-size: 2rem;
+    font-family: 'Dosis', sans-serif;
+    color: tan;
+    text-align: center;
+  }
+
+  h1{
+    font-size: 2rem;
+    text-align: center;
+    font-family: 'Dosis', sans-serif;
+  }
+  .allitems{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+  }

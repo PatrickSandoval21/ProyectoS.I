@@ -1,0 +1,113 @@
+.header{
+    box-sizing: border-box  ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;    
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: rgba(151, 92, 74, 0.363);
+}
+.logo{
+    filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.7));
+    width: 70px;
+}
+
+.restaurantName{
+    font-family: 'Dosis', sans-serif;
+    font-size: 1.5rem;
+    color: var(--lettersColor);
+    filter: drop-shadow(0 1.5px 1.5px rgba(0, 0, 0, 0.678));
+}
+
+.restaurantTitle{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 800px) {
+
+    body{
+        font-size: 1rem;
+    }
+    .image{
+        background-image: url('../images/background.jpg');
+    }
+}
+
+/* -------------------  RoutesLinks Styles --------------------- */
+
+.li-nav,.a-nav{
+    text-decoration: none;
+    list-style: none;
+    color: white;
+    font-family: 'Dosis', sans-serif;
+    font-size: 1rem;
+    padding: 5px 15px;
+    border-radius: 5px;
+    background-image: linear-gradient(rgba(255, 77, 13, 0.582), rgba(255, 77, 13, 0.582));
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size .3s;
+
+}
+.a-nav:hover{
+    transition: 0.5s; 
+    color: rgba(255, 77, 13, 0.582);
+    background-size: 100% 2px;
+}
+ul{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+}
+
+/* -------------------  UserInfo Styles --------------------- */
+.avatar_image{
+    width: 50px;
+    display: flex;
+}
+
+/* -------------------  Eslogan Styles --------------------- */
+.categorySection{
+    margin-top: -120px;
+}
+.image_background{
+    box-sizing: border-box;
+    width: 100%;
+    height: 700px;
+    background-image: url("../images/background.jpg");
+    background-position: center center;
+    /* background-attachment: fixed; */
+    background-size: cover;
+    padding-top: 250px;
+}
+
+.eslogan {
+    box-sizing: border-box;
+    height: 300px;
+    font-family: 'Dosis', sans-serif;
+    color: var(--lettersColor);
+    width: 35%;
+    font-size: 1.2rem;
+    display: flex-start;
+    justify-content: left;
+    flex-direction: column;
+    margin-left: 15%;
+    padding:  12px 40px;
+    background-color: rgba(100, 68, 52, 0.247) ;
+    border-radius: 10px;
+    color: white;
+}
+.userInfo{
+    display: flex;
+    flex-direction: row;
+    margin-right: 50px;
+}
+.userInfo p{
+    margin-right: 20px;
+}

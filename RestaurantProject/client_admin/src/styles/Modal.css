@@ -1,0 +1,63 @@
+.modal {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+    
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+  }
+  
+  .modal.is-open {
+    display: flex;
+  }
+/* 
+  .firstBox{
+    font-size: 1.2rem;  
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-shadow: 1px 1px teal;
+  } */
+  .secondBox{
+    font-size: 1.2rem;
+    /* padding: 20px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .modal-container {
+    font-size: 2rem;
+    border-radius: 15px;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: 1rem;
+    min-width: 620px;
+    max-width: 1050px;
+    min-height: 400px;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: rgb(182, 182, 182);
+    display: flex;
+    flex-direction: row;
+    font-family: 'Dosis', sans-serif;
+    /* margin: 2px black; */
+  }
+
+label{
+  font-size: 1.3rem;
+}
+

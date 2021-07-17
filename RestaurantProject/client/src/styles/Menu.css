@@ -1,0 +1,18 @@
+.icon_cat{
+    width: 40px;
+}
+.category_label{
+    font-family: 'Dosis', sans-serif;
+    font-size: 1.5rem;
+    color: var(--lettersColor);
+    padding: 0;
+    margin-right: 15px;
+    cursor: pointer;
+}
+.categories{
+    margin-top: 25px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}

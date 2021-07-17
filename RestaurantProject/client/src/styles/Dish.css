@@ -1,0 +1,74 @@
+.dishes_box{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center; 
+    margin-top: 20px; 
+}
+.dish{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 100%;
+    height: 350px;
+    background-color: var(--backgroundProductsBox);
+    margin: 10px;
+    align-items: center;
+    border-radius: 20px;
+}
+.dish_image{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 95%;
+    height: 235px;
+    background-color: var(--backgroundProductsBox);
+    align-items: center;
+    border-top-left-radius:20px;
+    border-top-right-radius:20px ;
+    margin-top: 10px;
+}
+.dish p{
+    font-family: 'Dosis', sans-serif;
+    color: var(--lettersColor);
+    margin: 5px;
+    font-size: 1.5rem;
+}
+.dish_title{
+    font-size: 2rem;
+    text-transform: uppercase;
+    margin: 5px;
+    color: whitesmoke;
+    text-shadow: 2px 2px teal;
+    font-family: 'Dosis', sans-serif;
+    font-size: 1.1rem;
+    margin: 2px;
+}
+.dish_info{
+    height: 110px;
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(219, 130, 98);
+    border-bottom-left-radius:20px;
+    border-bottom-right-radius:20px ;
+    margin-bottom: 10px;
+}
+.btn_dish{
+    font-family: 'Dosis', sans-serif;
+    background-color: rgb(197, 184, 184);
+    font-size: 1rem;
+    cursor: pointer;
+    border: 0;
+    border-radius: 5px;
+    padding: 5px 10px;
+    
+}
+.dish_container_modal{
+    display: flex;
+    width: 20%;
+    height: 350;
+    margin: 20px;
+}

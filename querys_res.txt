@@ -1,0 +1,521 @@
+
+Create database restaurant;
+use restaurant;
+
+create table customer(
+  customer_id int not null auto_increment,
+  email varchar(100) not null,
+  customer_password varchar(100) not null,
+  first_name varchar(100) not null,
+  last_name varchar(100) not null,
+  cellphone int(9) not null,
+  address varchar(200) not null,
+  time_joined timestamp default current_timestamp,
+  time_modified timestamp default current_timestamp on update current_timestamp,
+  PRIMARY KEY (`customer_id`)
+);
+--------------------------------------------------------------------------------------
+
+create table categories(
+  category_id int not null auto_increment,
+  category_name varchar(20) not null,
+  PRIMARY KEY (`category_id`)
+);
+
+insert into categories (category_name) values ('Pizzas');
+insert into categories (category_name) values ('Hamburguesas');
+insert into categories (category_name) values ('Bebidas');
+insert into categories (category_name) values ('Helados');
+----------------------------------------------------------------------------------------------------
+
+create table sub_categories(
+  sub_categories_id int not null auto_increment,
+  id_categories int not null,
+  name varchar(100) not null,
+  extra_price int ,
+  PRIMARY KEY (`sub_categories_id`),
+  FOREIGN KEY (`id_categories`) REFERENCES `categories`(`category_id`)
+)
+
+insert into sub_categories (name, id_categories, extra_price) values ('Mediana',1, 15);
+insert into sub_categories (name, id_categories, extra_price) values ('Grande',1, 23);
+insert into sub_categories (name, id_categories, extra_price) values ('Familiar',1, 35);
+insert into sub_categories (name, id_categories) values ('Aguas',3);
+insert into sub_categories (name, id_categories) values ('Gaseosas',3);
+insert into sub_categories (name, id_categories) values ('Bebidas Alcohólicas',3);
+-------------------------------------------------------------------------------------------------------
+create table dish(
+dish_id int not null auto_increment,
+dish_name varchar(100) not null,
+description varchar(200) not null,
+price double(5,2) not null,
+active boolean not null default 1,	
+id_category int not null,
+PRIMARY KEY (`dish_id`),
+FOREIGN KEY (`id_category`) REFERENCES `categories`(`category_id`)
+);
+
+create table order_dish(
+order_dishes_id int not null auto_increment,
+id_dish int not null,
+id_customer int not null,
+quantity int not null,
+previousPrice decimal(10,2) not null,
+PRIMARY KEY (`order_dishes_id`),
+FOREIGN KEY (`id_dish`) REFERENCES `dish`(`dish_id`),
+FOREIGN KEY (`id_customer`) REFERENCES `customer`(`customer_id`)
+);
+
+ALTER TABLE order_dish
+    ADD COLUMN id_customer int(200) NOT NULL ,
+    ADD CONSTRAINT `fk_id_customer` FOREIGN KEY (id_customer)
+        REFERENCES customer (`customer_id`);
+ALTER TABLE `order_dish` DROP FOREIGN KEY `order_dish_ibfk_2`;
+insert into purchase_order(id_customer, final_price) values(1,0.0)
+insert into order_dish(id_dish, id_order, quantity) values(1,1,1)
+
+CREATE TRIGGER updateFinalPrice AFTER INSERT ON  order_dish
+FOR EACH ROW UPDATE purchase_order SET final_price = final_price + 
+
+
+create table purchase_order(
+order_id int not null auto_increment,
+id_customer int not null,
+final_price decimal(20,2),
+satisfaction int(5),
+state_purchase boolean not null default 1,	
+time_created timestamp default current_timestamp,
+time_modified timestamp default current_timestamp on update current_timestamp,
+PRIMARY KEY (`order_id`),
+FOREIGN KEY (`id_customer`) REFERENCES `customer`(`customer_id`)
+);
+
+create table discount(
+discount_id int not null auto_increment,
+id_dish int not null,
+name varchar(100),
+description text,
+discount_percent decimal(4,2),
+active boolean default 1,
+time_created timestamp default current_timestamp,
+time_modified timestamp default current_timestamp on update current_timestamp,
+PRIMARY KEY (`discount_id`),
+FOREIGN KEY (`id_dish`) REFERENCES `dish`(`dish_id`)
+)
+
+create table dish_inventory(
+dish_inventory_id int not null auto_increment,
+id_dish int not null,
+quantity int not null,
+time_created timestamp default current_timestamp,
+time_modified timestamp default current_timestamp on update current_timestamp,
+PRIMARY KEY (`dish_inventory_id`),
+FOREIGN KEY (`id_dish`) REFERENCES `dish`(`dish_id`)
+);
+
+
+
+
+DELIMITER $$
+CREATE PROCEDURE InsertNewDish(IN dish_name varchar(100), IN description varchar(250), IN price decimal(5,2), IN id_category int)
+BEGIN
+    INSERT INTO dish (dish_name, description, price, id_category) VALUES (dish_name, description, price, id_category);
+END$$
+DELIMITER;
+
+CALL InsertNewDish('SUPER SUPREMA', 'Una perfecta mezcla de pepperoni americano, carne de res, carne de cerdo, Jamón, salchicha italiana, champiñones, pimientos verdes, cebolla roja, aceitunas verdes y queso mozzarella.', 11.90 , 1);
+CALL InsertNewDish('MEAT LOVERS' , '¡Un festín de carnes! Pepperoni americano, salchicha italiana, carne de res, carne de cerdo, rebanadas de Jamón y queso mozzarella.',  13.90, 1);
+CALL InsertNewDish('LA CHILI HUT', 'Deliciosa combinación de trozos de pollo, piña, tocino y salsa Chili thai',  9.90, 1);
+CALL InsertNewDish('CHICKEN BBQ', 'Exquisita combinación de trozos de pollo, piña, tocino y salsa BBQ.',  12.50, 1);
+CALL InsertNewDish('SUPREMA', 'Nuestra famosa combinación de pepperoni americano, carne de res, carne de cerdo, champiñones, pimientos verdes, cebolla roja y queso mozzarella.',  12.90, 1);
+CALL InsertNewDish('VEGETARIANA', 'Exquisita combinación de champiñones, aceitunas verdes, pimientos verdes, cebolla roja y queso mozzarella.',  11.90, 1);
+CALL InsertNewDish('CONTINENTAL', 'Deliciosa mixtura de Jamón, champiñones, cebolla roja y queso mozzarella.',  12.50,  1);
+CALL InsertNewDish('HAWAIANA', '¡El paraiso en la mesa! Se completa con jamón, jugosa piña y queso mozzarella.',  10.50, 1);
+CALL InsertNewDish('AMERICANA', '¡La Pizza preferida de los chicos! Jamón y queso mozzarella.',  11.90, 1);
+CALL InsertNewDish('PEPPERONI', 'Sabor incomparable de pepperoni americano y queso mozzarella.',  10.90, 1);
+CALL InsertNewDish('MOZZARELLA', 'Para los amantes del queso una deliciosa pizza con nuestro queso mozzarella gratinado.',  10.90, 1);
+CALL InsertNewDish('Hamburguesa Clásica', 'Deliciosa hamburguesa a la parrilla. ¡La más Clásica de Todas! Entre sus ingredientes encontramos: Mayonesa, Tomate, Lechuga ,Carne.',  11.90, 2);
+CALL InsertNewDish('Hamburguesa Cheese', '¡La prefereida de muchos! Deliciosa hamburguesa a la parrilla con queso edam. Entre sus ingredientes encontramos:  Mayonesa, Queso ,Lechuga ,Tomate.',  13.90, 2);
+CALL InsertNewDish('Hamburguesa La Churrita', 'La Churrita tiene los siguientes ingredientes: Tocino,  Papas al hilo,  Mayonesa de Chimichurri.',  14.90,2);
+CALL InsertNewDish('Hamburguesa Queso Tocino', 'Una de las mas rankeadas es la Hamburguesa Queso-Tocino:  Doble tocino, Queso Edam, Mayonesa, Lechuga, Tomate.',  15.90,2);
+CALL InsertNewDish('Hamburguesa Royal', '¡La Hamburguesa Royal está deliciosa! Contiene los siguientes ingredientes: Huevo, Queso Edam, Mayonesa, Lechuga, Tomate.',  15.90,2);
+CALL InsertNewDish('Hamburguesa A lo Pobre', 'Te presentamos a la Hamburguesa más peruana de todas: La A lo Pobre. Entre sus ingredientes encontramos: Huevo frito, Plátano frito, Mayonesa, Tomate, Cebolla Blanca.',  15.90, 2);
+CALL InsertNewDish('Hamburguesa La Carretillera', 'Deliciosa hamburguesa hecha a la parrilla con pollo deshilachado, salsa tártara y papitas al hilo. ',  15.90, 2);
+CALL InsertNewDish('Hamburguesa Parrillera', 'Deliciosa hamburguesa a la parrilla. ¡Super Deliciosa! Entre sus ingredientes encontramos: Mayonesa, Tomate, Lechuga.',  18.90, 2);
+CALL InsertNewDish('Hamburguesa Extrema', 'Te presentamos a la más contundente de todas: La Hamburguesa Extrema. Entre sus ingredientes encontramos: Doble carne, Queso Edam, Tocino, Tomate, Lechuga, Mayonesa.',  19.90, 2);
+CALL InsertNewDish('Agua San Luis', 'Agua San Luis S/A 625 ml',  2.90, 3);
+CALL InsertNewDish('Fanta Sabor Original', 'Fanta Sabor Original 500 ml',  3.90, 3);
+CALL InsertNewDish('Sprite Sabor Original', 'Sprite Sabor Original 500 ml', 3.90,3);
+CALL InsertNewDish('Inca Kola Sin Azucar', 'Inca Kola Sin Azucar 500 ml',  3.90,3);
+CALL InsertNewDish('Inca Kola Sabor Original', 'Inca Kola Sabor Original 500 ml',  3.90, 3);
+CALL InsertNewDish('Coca Cola Sin Azúcar', 'Coca Cola Sin Azúcar 500 ml',  3.90, 3);
+CALL InsertNewDish('Coca Cola Sabor Original', 'Coca Cola Sabor Original 500 ml',  3.90, 3);
+CALL InsertNewDish('Helado Peziduri Tricolor', 'Helado Peziduri Donofrio Tricolor Pote 930 ml',  8.50,4);
+CALL InsertNewDish('Helado Peziduri ChocoChips', 'Helado Peziduri Donofrio ChocoChips Pote 930 ml',  8.50, 4);
+CALL InsertNewDish('Helado Peziduri Vainilla', 'Helado Peziduri Donofrio Vainilla Pote 930 ml',  8.50, 4);
+CALL InsertNewDish('Helado Peziduri Lucuma', 'Helado Peziduri Donofrio Lucuma Pote 930 ml',  8.50, 4);
+CALL InsertNewDish('Helado Peziduri Chocolate', 'Helado Peziduri Donofrio Chocolate Pote 930 ml',  8.50, 4);
+
+DELIMITER $$
+CREATE PROCEDURE updateDish(IN Inputdish_name varchar(100), IN Inputdescription varchar(250), IN Inputprice decimal(5,2), IN id_category int, IN id int)
+BEGIN
+    UPDATE dish
+	SET  dish_name= Inputdish_name,
+	description = Inputdescription,
+	price = Inputprice,
+	id_category = id_category
+	WHERE dish_id  = id;
+END$$
+DELIMITER;
+
+
+DELIMITER $$
+CREATE PROCEDURE desactivateDish(IN id int, IN state_activate int)
+BEGIN
+    UPDATE dish
+	SET  active = state_activate 
+	WHERE dish_id  = id;
+END$$
+DELIMITER;
+
+DELIMITER $$
+CREATE PROCEDURE createNewDish(IN id int, IN name varchar(150), IN descrip varchar(200), IN addprice double(5,2))
+BEGIN
+    	CALL InsertNewDish(name , descrip ,  addprice , id );
+    END$$
+DELIMITER;
+
+
+
+
+DELIMITER $$
+CREATE PROCEDURE addNewDishStock(IN dish_id int, IN initialStock int)
+BEGIN
+    INSERT INTO dish_inventory(id_dish, quantity)  VALUES (dish_id, initialStock) ;
+END$$
+DELIMITER;
+
+call addNewDishStock(1,12);
+call addNewDishStock(2,14);
+call addNewDishStock(3,16);
+call addNewDishStock(4,20);
+call addNewDishStock(5,15);
+call addNewDishStock(6,14);
+call addNewDishStock(7,12);
+call addNewDishStock(8,18);
+call addNewDishStock(9,15);
+call addNewDishStock(10,13);
+call addNewDishStock(11,17);
+call addNewDishStock(12,15);
+call addNewDishStock(13,14);
+call addNewDishStock(14,16);
+call addNewDishStock(15,12);
+call addNewDishStock(16,21);
+call addNewDishStock(17,12);
+call addNewDishStock(18,15);
+call addNewDishStock(19,19);
+call addNewDishStock(20,17);
+call addNewDishStock(21,24);
+call addNewDishStock(22,25);
+call addNewDishStock(23,50);
+call addNewDishStock(24,30);
+call addNewDishStock(25,45);
+call addNewDishStock(26,40);
+call addNewDishStock(27,30);
+call addNewDishStock(28,12);
+call addNewDishStock(29,12);
+call addNewDishStock(30,12);
+call addNewDishStock(31,12);
+call addNewDishStock(33,12);
+
+DELIMITER $$
+CREATE PROCEDURE updateDishStock(IN dish_id int, IN stock int)
+BEGIN
+    UPDATE dish_inventory SET quantity = stock WHERE id_dish = dish_id ;
+END$$
+DELIMITER;
+
+call updateDishStock(1, 13);
+
+DELIMITER $$
+CREATE PROCEDURE DeleteDish(IN id_dish int)
+BEGIN
+   DELETE FROM dish WHERE dish_id = id_dish;
+    END$$
+DELIMITER;
+
+DELIMITER $$
+CREATE PROCEDURE CreateNewDiscount(IN id_dish int, IN name varchar(200), IN description text, IN discount_percent decimal(5,2))
+BEGIN
+   INSERT INTO discount (id_dish, name, description, discount_percent) values (id_dish, name, description, discount_percent);
+    END$$
+DELIMITER
+
+call CreateNewDiscount(1,'Felices Fiestas Patrias!','Descuento de 20% en todas nuestras Pizzas', 0.20);
+call CreateNewDiscount(2, ' Felices Fiestas Patrias! ', 'Descuento de 20% en todas nuestras Pizzas', 0.20);
+call CreateNewDiscount(3, ' Felices Fiestas Patrias! ', 'Descuento de 20% en todas nuestras Pizzas', 0.20);
+call CreateNewDiscount(4, ' Felices Fiestas Patrias! ', 'Descuento de 20% en todas nuestras Pizzas', 0.20);
+call CreateNewDiscount(5, ' Felices Fiestas Patrias! ', 'Descuento de 20% en todas nuestras Pizzas', 0.20);
+call CreateNewDiscount(6, ' Felices Fiestas Patrias! ', 'Descuento de 20% en todas nuestras Pizzas', 0.20);
+call CreateNewDiscount(7, ' Felices Fiestas Patrias! ', 'Descuento de 20% en todas nuestras Pizzas', 0.20);
+call CreateNewDiscount(8, ' Felices Fiestas Patrias! ', 'Descuento de 20% en todas nuestras Pizzas', 0.20);
+call CreateNewDiscount(9, ' Felices Fiestas Patrias! ', 'Descuento de 20% en todas nuestras Pizzas', 0.20);
+call CreateNewDiscount(10, ' Felices Fiestas Patrias! ', 'Descuento de 20% en todas nuestras Pizzas', 0.20);
+call CreateNewDiscount(11, ' Felices Fiestas Patrias! ', 'Descuento de 20% en todas nuestras Pizzas', 0.20);
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+DELIMITER $$
+CREATE PROCEDURE DeleteDiscount(IN dish_id int)
+BEGIN
+  DELETE FROM discount WHERE id_dish = dish_id;
+    END$$
+DELIMITER
+
+call DeleteDiscount(1);
+
+DELIMITER $$
+CREATE PROCEDURE DesactivateDiscount(IN dish_id int)
+BEGIN
+  UPDATE discount SET active = 0 WHERE id_dish = dish_id;
+    END$$
+DELIMITER
+
+call DesactivateDiscount(1);
+
+DELIMITER $$
+CREATE PROCEDURE ActivateDiscount(IN dish_id int)
+BEGIN
+  UPDATE discount SET active = 1 WHERE id_dish = dish_id;
+    END$$
+DELIMITER
+
+DELIMITER $$
+CREATE PROCEDURE updateDiscount(IN id int, IN newname varchar(100), IN newdescription varchar(200), IN newpercent decimal(4,2))
+BEGIN
+  UPDATE discount SET 
+     name = newname,
+     description  = newdescription ,
+     discount_percent = newpercent 
+    WHERE discount_id= id ;
+    END$$
+DELIMITER
+
+
+
+DELIMITER $$
+CREATE PROCEDURE ADM_getAllDishes()
+BEGIN
+  SELECT 
+	  d.dish_id,
+	  d.dish_name,
+	  d.description,
+	  d.price,
+	  cat.category_name,
+	  d.active
+  FROM 
+	  dish as d,
+	  categories as cat
+  WHERE
+  	d.id_category = cat.category_id;
+END$$
+DELIMITER
+
+
+DELIMITER $$
+CREATE PROCEDURE ADM_getDiscounts()
+BEGIN
+ SELECT 
+	  d.discount_id,
+	  di.dish_name,
+	  d.name,
+	  d.description,
+	  d.discount_percent,
+	  d.active,
+	  d.time_created,
+	  d.time_modified
+  FROM 
+	  discount as d,
+	  dish as di
+  WHERE
+  	d.id_dish = di.dish_id;
+END$$
+DELIMITER
+
+DELIMITER $$
+CREATE PROCEDURE ADM_getStocks()
+BEGIN
+ SELECT 
+ 	stock.dish_inventory_id,
+	di.dish_name,
+	di.dish_id,
+	stock.quantity,
+	stock.time_created,
+	stock.time_modified
+  FROM 
+	  dish_inventory as stock,
+	  dish as di
+  WHERE
+  	stock.id_dish = di.dish_id;
+END$$
+DELIMITER
+
+DELIMITER $$
+CREATE PROCEDURE updateStock(IN id int, IN newquantity int )
+BEGIN
+  UPDATE dish_inventory SET quantity = newquantity  WHERE dish_inventory_id = id ;
+    END$$
+DELIMITER
+
+DELIMITER $$
+CREATE PROCEDURE addPurchase(IN Inputid_dish int, IN Inputid_customer int, IN Inputquantity int, IN InputpreviousPrice  decimal(10,2))
+BEGIN
+   INSERT INTO order_dish(id_dish, id_customer , quantity , previousPrice) values (Inputid_dish, Inputid_customer , Inputquantity, InputpreviousPrice  );
+    END$$
+DELIMITER
+
+DELIMITER $$
+CREATE PROCEDURE getListPurchases(IN Inputid_customer int)
+BEGIN
+    SELECT 
+    	di.dish_id,
+ 	di.dish_name,
+	items.quantity,
+	di.price,
+	items.previousPrice
+  FROM 
+	  dish as di,
+	  order_dish as items
+  WHERE
+  	items.id_dish = di.dish_id AND items.id_customer =  Inputid_customer;
+    END$$
+DELIMITER
+
+DELIMITER $$
+CREATE PROCEDURE generateOrder(IN Inputid_customer int, IN FinalPrice int, IN satis int)
+BEGIN
+   INSERT INTO purchase_order(id_customer, final_price, satisfaction ) values (Inputid_customer , FinalPrice  , satis );
+    END$$
+DELIMITER
+
+DELIMITER $$
+CREATE PROCEDURE deleteItemsPurchases(IN Inputid_customer int, IN Inputid_dish int)
+BEGIN
+   delete from order_dish where id_dish = Inputid_dish and id_customer = Inputid_customer;   
+    END$$
+DELIMITER
+
+
+DELIMITER $$
+CREATE PROCEDURE getOrders(IN Inputid_customer int)
+BEGIN
+   select * from purchase_order where id_customer = Inputid_customer;
+       END$$
+DELIMITER
+
+DELIMITER $$
+CREATE PROCEDURE addCategory(IN nameCat varchar(20))
+BEGIN
+   INSERT INTO categories( category_name ) values (nameCat  );
+    END$$
+DELIMITER
+
+
+DELIMITER $$
+CREATE PROCEDURE ADMgetListPurchases()
+BEGIN
+    SELECT 
+    	items.order_dishes_id,
+    	di.dish_id,
+ 	di.dish_name,
+ 	client.customer_id,
+	items.quantity,
+	items.previousPrice
+  FROM 
+	  dish as di,
+	  order_dish as items,
+	  customer as client
+  WHERE
+  	items.id_dish = di.dish_id AND items.id_customer = client.customer_id;
+    END$$
+DELIMITER
+
+
+DELIMITER $$
+CREATE PROCEDURE ADMgetAllOrders()
+BEGIN
+    SELECT 
+    	items.order_id,
+    	items.id_customer,
+ 	client. first_name,
+ 	client.address ,
+ 	client.cellphone ,
+	items.final_price,
+	items.satisfaction,
+	items.state_purchase
+  FROM 
+	  purchase_order as items,
+	  customer as client
+  WHERE
+  	items.id_customer = client.customer_id ;
+    END$$
+DELIMITER
+
+
+
+DELIMITER $$
+CREATE PROCEDURE DishHaveDiscount(IN dish_id int)
+BEGIN
+  SELECT discount_percent from discount where id_dish = dish_id;
+ END$$
+DELIMITER
+
+DELIMITER $$
+CREATE PROCEDURE getAllDishes()
+BEGIN
+    SELECT dish_id, dish_name, description, price, id_category, active FROM dish;
+    END$$
+DELIMITER;
+
+DELIMITER $$
+CREATE PROCEDURE getSubCategories(IN id_categories int)
+BEGIN
+    SELECT sub_categories_id, name, extra_price FROM sub_categories WHERE  id_categories = id_categories;
+    END$$
+DELIMITER;
+
+DELIMITER $$
+CREATE PROCEDURE getDishesByCategories(IN  id_categoryInput int)
+BEGIN
+    SELECT  dish_id, dish_name, description, price, active FROM dish
+    WHERE id_category = id_categoryInput;
+END$$
+DELIMITER;
+ 
+ DELIMITER $$
+CREATE PROCEDURE createNewCustomer(IN  Inp_email varchar(100), IN Inp_customer_password varchar(100), IN Inp_first_name varchar(100), IN Inp_last_name varchar(100), IN Inp_cellphone int(9), IN Inp_address varchar(200))
+BEGIN
+    INSERT INTO customer (email, customer_password, first_name, last_name, cellphone, address) VALUES (Inp_email, Inp_customer_password, Inp_first_name, Inp_last_name, Inp_cellphone, Inp_address);   
+    END$$
+DELIMITER;
+
+DELIMITER $$
+CREATE PROCEDURE getCategories()
+BEGIN
+    SELECT * FROM Categories;
+END$$
+DELIMITER;
+
+TRiggers
+
+CREATE TRIGGER subtractDishStock
+AFTER INSERT ON order_dish
+FOR EACH ROW
+UPDATE dish_inventory
+SET quantity = quantity  - new.quantity  
+WHERE id_dish = new.id_dish;
+
+CREATE TRIGGER agreeDishStock
+AFTER DELETE ON order_dish
+FOR EACH ROW
+UPDATE dish_inventory
+SET quantity = quantity  + old.quantity  
+WHERE id_dish = old.id_dish;
